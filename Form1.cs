@@ -99,17 +99,26 @@ namespace Proyecto_Archivos
                     }
                     else
                     {
+                        string NombreAnteriorEntidad = "";
+                        string NuevoNombreEntidad = "";
                         foreach (Entidad en in D.Entidades)
                         {
                             if (en.ObtenCadenaNombre() == TextB_NombreActualEnt.Text)
                             {
+                                NombreAnteriorEntidad = en.ObtenCadenaNombre();
                                 en.Nombre_Entidad = ConvierteCadena(TextB_NuevoNombEnt.Text, 35);
                                 ManejoArchivo.ModificaEntidad(en, RutaArchivo, archivo);
+                                NuevoNombreEntidad = en.ObtenCadenaNombre();
                             }
+                        }
+                        if (BuscaRelacionTablaPadre(NombreAnteriorEntidad))
+                        {
+                            ActualizaRelacionTablaPadre(NombreAnteriorEntidad, NuevoNombreEntidad);
                         }
                         D.Entidades = D.Entidades.OrderBy(o => o.ObtenCadenaNombre()).ToList();
                         ManejoArchivo.ActualizaCabecera(RutaArchivo, archivo, D.Entidades[0].Direccion_Entidad);
                         Cabecera = ManejoArchivo.ObtenCabecera(RutaArchivo, archivo);
+                        ManejoArchivo.GuardaRelaciones(D.Entidades, RutaRelaciones);
                         LB_Cabecera.Text = Cabecera.ToString();
                         ActEntidades();
                         ActualizaDGVEntidades();
@@ -154,28 +163,37 @@ namespace Proyecto_Archivos
         public void EliminaEntidad(string NombreEntidad)
         {
             int aux = 0;
-            for (int i = 0; i < D.Entidades.Count; i++)
+            if (!BuscaRelacionTablaPadre(NombreEntidad))
             {
-                if (D.Entidades[i].ObtenCadenaNombre() == NombreEntidad)
+                for (int i = 0; i < D.Entidades.Count; i++)
                 {
-                    aux = i;
+                    if (D.Entidades[i].ObtenCadenaNombre() == NombreEntidad)
+                    {
+                        aux = i;
+                    }
                 }
-            }
-            if (aux == D.Entidades.Count - 1)
-            {
-                D.Entidades[aux - 1].Dir_SigEntidad = -1;
-                D.Entidades.RemoveAt(aux);
-            }
-            else if (aux == 0)
-            {
-                D.Entidades.RemoveAt(aux);
+                if (aux == D.Entidades.Count - 1)
+                {
+                    D.Entidades[aux - 1].Dir_SigEntidad = -1;
+                    D.Entidades.RemoveAt(aux);
+                }
+                else if (aux == 0)
+                {
+                    D.Entidades.RemoveAt(aux);
+                }
+                else
+                {
+                    D.Entidades[aux - 1].Dir_SigEntidad = D.Entidades[aux + 1].Direccion_Entidad;
+                    D.Entidades.RemoveAt(aux);
+                }
+                ReorganizaEntidades();
+                ManejoArchivo.GuardaRelaciones(D.Entidades, RutaRelaciones);
             }
             else
             {
-                D.Entidades[aux - 1].Dir_SigEntidad = D.Entidades[aux + 1].Direccion_Entidad;
-                D.Entidades.RemoveAt(aux);
+                MessageBox.Show("No se puede eliminar esta Tabla porque tiene una o más tablas dependientes");
             }
-            ReorganizaEntidades();
+            
         }
 
         public void EliminaEntidad0(string NombreEntidad)
@@ -192,6 +210,7 @@ namespace Proyecto_Archivos
             ManejoArchivo.ActualizaCabecera(RutaArchivo, archivo, -1);
             Cabecera = ManejoArchivo.ObtenCabecera(RutaArchivo, archivo);
             LB_Cabecera.Text = Cabecera.ToString();
+            ManejoArchivo.CargaRelaciones(D.Entidades, archivo, RutaRelaciones);
             ActualizaDGVEntidades();
         }
         public void ReorganizaEntidades()
@@ -352,7 +371,7 @@ namespace Proyecto_Archivos
             }
             else if (ComboB_TipoAtributo.SelectedIndex == 2)
             {
-                TextB_LongitudAtributo.Text = "4";
+                TextB_LongitudAtributo.Text = "8";
                 TextB_LongitudAtributo.Enabled = false;
             }
         }
@@ -699,8 +718,8 @@ namespace Proyecto_Archivos
                             DGV_Registros.Rows[j].Cells[E.Atributos[i].ObtenCadenaNombre()].Value = Cadena;
                         }
                         else if (E.Atributos[i].getTipoAtributo() == "D")
-                        {
-                            float Numero = BitConverter.ToSingle(b, 0);
+                        { 
+                            double Numero = BitConverter.ToDouble(b, 0);
                             DGV_Registros.Rows[j].Cells[E.Atributos[i].ObtenCadenaNombre()].Value = Numero;
                         }
                         i++;
@@ -755,8 +774,8 @@ namespace Proyecto_Archivos
                     }
                     else if (Aux.Atributos[indicePrimario].getTipoAtributo() == "D")
                     {
-                        float Numero = BitConverter.ToSingle(Aux.Registros[i].Informacion[indicePrimario], 0);
-                        float Numero2 = BitConverter.ToSingle(NuevoRegistro.Informacion[indicePrimario], 0);
+                        double Numero = BitConverter.ToDouble(Aux.Registros[i].Informacion[indicePrimario], 0);
+                        double Numero2 = BitConverter.ToDouble(NuevoRegistro.Informacion[indicePrimario], 0);
                         if (Numero == Numero2)
                         {
                             Nuevo = false;
@@ -1049,7 +1068,7 @@ namespace Proyecto_Archivos
                     Indices = Indices.OrderBy(o => System.Text.Encoding.UTF8.GetString(o.Llave)).ToList();
                     break;
                 case 3:
-                    Indices = Indices.OrderBy(o => BitConverter.ToSingle(o.Llave, 0)).ToList();
+                    Indices = Indices.OrderBy(o => BitConverter.ToDouble(o.Llave, 0)).ToList();
                     break;
             }
             return Indices;
@@ -1225,9 +1244,9 @@ namespace Proyecto_Archivos
                 }
                 else if (a.getTipoAtributo() == "D")
                 {
-                    float F = Single.Parse(DGV_AtributosRegistro.CurrentRow.Cells[a.ObtenCadenaNombre()].Value.ToString());
-                    byte[] FloatEnBytes = BitConverter.GetBytes(F);
-                    NuevoRegistro.Informacion.Add(FloatEnBytes);
+                    double F = double.Parse(DGV_AtributosRegistro.CurrentRow.Cells[a.ObtenCadenaNombre()].Value.ToString());
+                    byte[] DoubleEnBytes = BitConverter.GetBytes(F);
+                    NuevoRegistro.Informacion.Add(DoubleEnBytes);
                 }
             }
             NuevoRegistro.Direccion = ManejoArchivo.ObtenUltimaDireccion(RutaArchivoDatos, archivo);
@@ -1392,6 +1411,15 @@ namespace Proyecto_Archivos
                         index = j;
                     }
                 }
+                else if(TipoDato == 3)
+                {
+                    double Numero1 = BitConverter.ToDouble(Llave, 0);
+                    double Numero2 = BitConverter.ToDouble(i.Llave, 0);
+                    if(Numero1 == Numero2)
+                    {
+                        index = j;
+                    }
+                }
                 j++;
             }
             return index;
@@ -1541,5 +1569,45 @@ namespace Proyecto_Archivos
             Entidad E = D.Entidades.ElementAt(ComboB_EntidadRelaciones.SelectedIndex);
             ActualizaDGVRelaciones(E);
         }
+
+        #region Métodos para Relaciones
+        /// <summary>
+        /// Este método realiza la búsqueda en todas las relaciones de las entidades, para ver si la Entidad tiene relación con alguna tabla.
+        /// </summary>
+        /// <returns>Regresa Verdadero si tiene Relación con alguna tabla, y Falso en caso contrario.</returns>
+        public bool BuscaRelacionTablaPadre(string NombreTabla)
+        {
+            foreach(Entidad e in D.Entidades)
+            {
+                foreach(Relacion r in e.Relaciones)
+                {
+                    if(r.NombreTablaPadre == NombreTabla)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        /// <summary>
+        /// Este método hace la actualización del nombre de la tabla Padre en todas las relaciones que el tenga con las demás entidades.
+        /// </summary>
+        /// <param name="NombreTabla"></param>
+        /// <returns></returns>
+        public void ActualizaRelacionTablaPadre(string NombreTabla, string NuevoNombreTabla)
+        {
+            foreach(Entidad e in D.Entidades)
+            {
+                foreach(Relacion R in e.Relaciones)
+                {
+                    if(R.NombreTablaPadre == NombreTabla)
+                    {
+                        R.NombreTablaPadre = NuevoNombreTabla;
+                    }
+                }
+            }
+            ManejoArchivo.GuardaRelaciones(D.Entidades, RutaRelaciones);
+        }
+        #endregion
     }
 }

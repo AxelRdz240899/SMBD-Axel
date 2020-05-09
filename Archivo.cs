@@ -211,7 +211,7 @@ namespace Proyecto_Archivos
                         }
                         else if (A.getTipoAtributo() == "D")
                         {
-                            byte[] NB = lector.ReadBytes(4);
+                            byte[] NB = lector.ReadBytes(8);
                             nuevo.Informacion.Add(NB);
                         }
                     }
@@ -325,7 +325,7 @@ namespace Proyecto_Archivos
                 }
                 else if (TipoDatoIndice == 3)
                 {
-                    float Numero = Lector.ReadSingle();
+                    double Numero = Lector.ReadDouble();
                     byte[] NumeroFEnBytes = BitConverter.GetBytes(Numero);
                     NuevoIndice.Llave = NumeroFEnBytes;
                 }

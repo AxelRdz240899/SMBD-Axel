@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Pestañas = new System.Windows.Forms.TabControl();
             this.Pestaña_Entidades = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
@@ -124,6 +124,14 @@
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Pestaña_Relaciones = new System.Windows.Forms.TabPage();
+            this.LB_EntidadRelaciones = new System.Windows.Forms.Label();
+            this.ComboB_EntidadRelaciones = new System.Windows.Forms.ComboBox();
+            this.DGV_Relaciones = new System.Windows.Forms.DataGridView();
+            this.ColumnaTablaHijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnaAtributoHijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnaTablaPadre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnaAtributoTablaPadre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -131,14 +139,6 @@
             this.abrirArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NuevoArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Pestaña_Relaciones = new System.Windows.Forms.TabPage();
-            this.DGV_Relaciones = new System.Windows.Forms.DataGridView();
-            this.ColumnaTablaHijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnaAtributoHijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnaTablaPadre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnaAtributoTablaPadre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ComboB_EntidadRelaciones = new System.Windows.Forms.ComboBox();
-            this.LB_EntidadRelaciones = new System.Windows.Forms.Label();
             this.Pestañas.SuspendLayout();
             this.Pestaña_Entidades.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Entidades)).BeginInit();
@@ -156,10 +156,10 @@
             this.Pestaña_ArbolSecundario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_ArbolSSecundario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_ArbolSecundario)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             this.Pestaña_Relaciones.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Relaciones)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Pestañas
@@ -624,7 +624,7 @@
             // 
             // BT_LimpiarDGVAtributosRegistro
             // 
-            this.BT_LimpiarDGVAtributosRegistro.Location = new System.Drawing.Point(17, 85);
+            this.BT_LimpiarDGVAtributosRegistro.Location = new System.Drawing.Point(17, 106);
             this.BT_LimpiarDGVAtributosRegistro.Name = "BT_LimpiarDGVAtributosRegistro";
             this.BT_LimpiarDGVAtributosRegistro.Size = new System.Drawing.Size(75, 23);
             this.BT_LimpiarDGVAtributosRegistro.TabIndex = 7;
@@ -669,20 +669,20 @@
             this.DGV_AtributosRegistro.AllowUserToAddRows = false;
             this.DGV_AtributosRegistro.AllowUserToDeleteRows = false;
             this.DGV_AtributosRegistro.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_AtributosRegistro.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_AtributosRegistro.DefaultCellStyle = dataGridViewCellStyle1;
             this.DGV_AtributosRegistro.Location = new System.Drawing.Point(17, 33);
             this.DGV_AtributosRegistro.MultiSelect = false;
             this.DGV_AtributosRegistro.Name = "DGV_AtributosRegistro";
             this.DGV_AtributosRegistro.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.DGV_AtributosRegistro.ShowCellErrors = false;
-            this.DGV_AtributosRegistro.Size = new System.Drawing.Size(816, 45);
+            this.DGV_AtributosRegistro.Size = new System.Drawing.Size(816, 67);
             this.DGV_AtributosRegistro.TabIndex = 3;
             this.DGV_AtributosRegistro.SelectionChanged += new System.EventHandler(this.DGV_AtributosRegistro_SelectionChanged);
             // 
@@ -1039,6 +1039,74 @@
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
             this.dataGridViewTextBoxColumn11.Width = 50;
             // 
+            // Pestaña_Relaciones
+            // 
+            this.Pestaña_Relaciones.Controls.Add(this.LB_EntidadRelaciones);
+            this.Pestaña_Relaciones.Controls.Add(this.ComboB_EntidadRelaciones);
+            this.Pestaña_Relaciones.Controls.Add(this.DGV_Relaciones);
+            this.Pestaña_Relaciones.Location = new System.Drawing.Point(4, 22);
+            this.Pestaña_Relaciones.Name = "Pestaña_Relaciones";
+            this.Pestaña_Relaciones.Size = new System.Drawing.Size(1006, 533);
+            this.Pestaña_Relaciones.TabIndex = 6;
+            this.Pestaña_Relaciones.Text = "Relaciones";
+            this.Pestaña_Relaciones.UseVisualStyleBackColor = true;
+            // 
+            // LB_EntidadRelaciones
+            // 
+            this.LB_EntidadRelaciones.AutoSize = true;
+            this.LB_EntidadRelaciones.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LB_EntidadRelaciones.Location = new System.Drawing.Point(742, 42);
+            this.LB_EntidadRelaciones.Name = "LB_EntidadRelaciones";
+            this.LB_EntidadRelaciones.Size = new System.Drawing.Size(80, 20);
+            this.LB_EntidadRelaciones.TabIndex = 2;
+            this.LB_EntidadRelaciones.Text = "ENTIDAD";
+            // 
+            // ComboB_EntidadRelaciones
+            // 
+            this.ComboB_EntidadRelaciones.FormattingEnabled = true;
+            this.ComboB_EntidadRelaciones.Location = new System.Drawing.Point(721, 75);
+            this.ComboB_EntidadRelaciones.Name = "ComboB_EntidadRelaciones";
+            this.ComboB_EntidadRelaciones.Size = new System.Drawing.Size(121, 21);
+            this.ComboB_EntidadRelaciones.TabIndex = 1;
+            this.ComboB_EntidadRelaciones.SelectedIndexChanged += new System.EventHandler(this.ComboB_EntidadRelaciones_SelectedIndexChanged);
+            // 
+            // DGV_Relaciones
+            // 
+            this.DGV_Relaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_Relaciones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnaTablaHijo,
+            this.ColumnaAtributoHijo,
+            this.ColumnaTablaPadre,
+            this.ColumnaAtributoTablaPadre});
+            this.DGV_Relaciones.Location = new System.Drawing.Point(136, 42);
+            this.DGV_Relaciones.Name = "DGV_Relaciones";
+            this.DGV_Relaciones.Size = new System.Drawing.Size(442, 444);
+            this.DGV_Relaciones.TabIndex = 0;
+            // 
+            // ColumnaTablaHijo
+            // 
+            this.ColumnaTablaHijo.HeaderText = "Tabla Hijo";
+            this.ColumnaTablaHijo.Name = "ColumnaTablaHijo";
+            this.ColumnaTablaHijo.ReadOnly = true;
+            // 
+            // ColumnaAtributoHijo
+            // 
+            this.ColumnaAtributoHijo.HeaderText = "Nombre Atributo";
+            this.ColumnaAtributoHijo.Name = "ColumnaAtributoHijo";
+            this.ColumnaAtributoHijo.ReadOnly = true;
+            // 
+            // ColumnaTablaPadre
+            // 
+            this.ColumnaTablaPadre.HeaderText = "Tabla Padre";
+            this.ColumnaTablaPadre.Name = "ColumnaTablaPadre";
+            this.ColumnaTablaPadre.ReadOnly = true;
+            // 
+            // ColumnaAtributoTablaPadre
+            // 
+            this.ColumnaAtributoTablaPadre.HeaderText = "Atributo Tabla Padre";
+            this.ColumnaAtributoTablaPadre.Name = "ColumnaAtributoTablaPadre";
+            this.ColumnaAtributoTablaPadre.ReadOnly = true;
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1093,74 +1161,6 @@
             this.cerrarArchivoToolStripMenuItem.Text = "Cerrar Archivo";
             this.cerrarArchivoToolStripMenuItem.Click += new System.EventHandler(this.CerrarArchivoToolStripMenuItem_Click);
             // 
-            // Pestaña_Relaciones
-            // 
-            this.Pestaña_Relaciones.Controls.Add(this.LB_EntidadRelaciones);
-            this.Pestaña_Relaciones.Controls.Add(this.ComboB_EntidadRelaciones);
-            this.Pestaña_Relaciones.Controls.Add(this.DGV_Relaciones);
-            this.Pestaña_Relaciones.Location = new System.Drawing.Point(4, 22);
-            this.Pestaña_Relaciones.Name = "Pestaña_Relaciones";
-            this.Pestaña_Relaciones.Size = new System.Drawing.Size(1006, 533);
-            this.Pestaña_Relaciones.TabIndex = 6;
-            this.Pestaña_Relaciones.Text = "Relaciones";
-            this.Pestaña_Relaciones.UseVisualStyleBackColor = true;
-            // 
-            // DGV_Relaciones
-            // 
-            this.DGV_Relaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_Relaciones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnaTablaHijo,
-            this.ColumnaAtributoHijo,
-            this.ColumnaTablaPadre,
-            this.ColumnaAtributoTablaPadre});
-            this.DGV_Relaciones.Location = new System.Drawing.Point(136, 42);
-            this.DGV_Relaciones.Name = "DGV_Relaciones";
-            this.DGV_Relaciones.Size = new System.Drawing.Size(442, 444);
-            this.DGV_Relaciones.TabIndex = 0;
-            // 
-            // ColumnaTablaHijo
-            // 
-            this.ColumnaTablaHijo.HeaderText = "Tabla Hijo";
-            this.ColumnaTablaHijo.Name = "ColumnaTablaHijo";
-            this.ColumnaTablaHijo.ReadOnly = true;
-            // 
-            // ColumnaAtributoHijo
-            // 
-            this.ColumnaAtributoHijo.HeaderText = "Nombre Atributo";
-            this.ColumnaAtributoHijo.Name = "ColumnaAtributoHijo";
-            this.ColumnaAtributoHijo.ReadOnly = true;
-            // 
-            // ColumnaTablaPadre
-            // 
-            this.ColumnaTablaPadre.HeaderText = "Tabla Padre";
-            this.ColumnaTablaPadre.Name = "ColumnaTablaPadre";
-            this.ColumnaTablaPadre.ReadOnly = true;
-            // 
-            // ColumnaAtributoTablaPadre
-            // 
-            this.ColumnaAtributoTablaPadre.HeaderText = "Atributo Tabla Padre";
-            this.ColumnaAtributoTablaPadre.Name = "ColumnaAtributoTablaPadre";
-            this.ColumnaAtributoTablaPadre.ReadOnly = true;
-            // 
-            // ComboB_EntidadRelaciones
-            // 
-            this.ComboB_EntidadRelaciones.FormattingEnabled = true;
-            this.ComboB_EntidadRelaciones.Location = new System.Drawing.Point(721, 75);
-            this.ComboB_EntidadRelaciones.Name = "ComboB_EntidadRelaciones";
-            this.ComboB_EntidadRelaciones.Size = new System.Drawing.Size(121, 21);
-            this.ComboB_EntidadRelaciones.TabIndex = 1;
-            this.ComboB_EntidadRelaciones.SelectedIndexChanged += new System.EventHandler(this.ComboB_EntidadRelaciones_SelectedIndexChanged);
-            // 
-            // LB_EntidadRelaciones
-            // 
-            this.LB_EntidadRelaciones.AutoSize = true;
-            this.LB_EntidadRelaciones.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LB_EntidadRelaciones.Location = new System.Drawing.Point(742, 42);
-            this.LB_EntidadRelaciones.Name = "LB_EntidadRelaciones";
-            this.LB_EntidadRelaciones.Size = new System.Drawing.Size(80, 20);
-            this.LB_EntidadRelaciones.TabIndex = 2;
-            this.LB_EntidadRelaciones.Text = "ENTIDAD";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1192,12 +1192,12 @@
             this.Pestaña_ArbolSecundario.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGV_ArbolSSecundario)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_ArbolSecundario)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.Pestaña_Relaciones.ResumeLayout(false);
             this.Pestaña_Relaciones.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Relaciones)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
