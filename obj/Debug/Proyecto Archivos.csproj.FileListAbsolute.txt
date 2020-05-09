@@ -1,0 +1,50 @@
+C:\Users\narut\Desktop\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Form1.resources
+C:\Users\narut\Desktop\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Properties.Resources.resources
+C:\Users\narut\Desktop\Proyecto Archivos\obj\Debug\Proyecto Archivos.csproj.GenerateResource.cache
+C:\Users\narut\Desktop\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe.config
+C:\Users\narut\Desktop\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe
+C:\Users\narut\Desktop\Proyecto Archivos\bin\Debug\Proyecto Archivos.pdb
+C:\Users\narut\Desktop\Proyecto Archivos\obj\Debug\Proyecto Archivos.exe
+C:\Users\narut\Desktop\Proyecto Archivos\obj\Debug\Proyecto Archivos.pdb
+E:\A\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe.config
+E:\A\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe
+E:\A\Proyecto Archivos\bin\Debug\Proyecto Archivos.pdb
+E:\A\Proyecto Archivos\obj\Debug\Proyecto Archivos.csprojAssemblyReference.cache
+E:\A\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Form1.resources
+E:\A\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Properties.Resources.resources
+E:\A\Proyecto Archivos\obj\Debug\Proyecto Archivos.csproj.GenerateResource.cache
+E:\A\Proyecto Archivos\obj\Debug\Proyecto Archivos.csproj.CoreCompileInputs.cache
+E:\A\Proyecto Archivos\obj\Debug\Proyecto Archivos.exe
+E:\A\Proyecto Archivos\obj\Debug\Proyecto Archivos.pdb
+C:\Users\narut\OneDrive\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe.config
+C:\Users\narut\OneDrive\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe
+C:\Users\narut\OneDrive\Proyecto Archivos\bin\Debug\Proyecto Archivos.pdb
+C:\Users\narut\OneDrive\Proyecto Archivos\obj\Debug\Proyecto Archivos.csprojAssemblyReference.cache
+C:\Users\narut\OneDrive\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Form1.resources
+C:\Users\narut\OneDrive\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Properties.Resources.resources
+C:\Users\narut\OneDrive\Proyecto Archivos\obj\Debug\Proyecto Archivos.csproj.GenerateResource.cache
+C:\Users\narut\OneDrive\Proyecto Archivos\obj\Debug\Proyecto Archivos.exe
+C:\Users\narut\OneDrive\Proyecto Archivos\obj\Debug\Proyecto Archivos.pdb
+E:\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe.config
+E:\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe
+E:\Proyecto Archivos\bin\Debug\Proyecto Archivos.pdb
+E:\Proyecto Archivos\obj\Debug\Proyecto Archivos.csprojAssemblyReference.cache
+E:\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Form1.resources
+E:\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Properties.Resources.resources
+E:\Proyecto Archivos\obj\Debug\Proyecto Archivos.csproj.GenerateResource.cache
+E:\Proyecto Archivos\obj\Debug\Proyecto Archivos.exe
+E:\Proyecto Archivos\obj\Debug\Proyecto Archivos.pdb
+C:\Users\narut\Desktop\Proyecto Archivos\obj\Debug\Proyecto Archivos.csprojAssemblyReference.cache
+C:\Users\narut\Desktop\Proyecto Archivos\obj\Debug\Proyecto Archivos.csproj.CoreCompileInputs.cache
+C:\Users\narut\Desktop\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Form2.resources
+C:\Users\narut\Documents\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe.config
+C:\Users\narut\Documents\Proyecto Archivos\bin\Debug\Proyecto Archivos.exe
+C:\Users\narut\Documents\Proyecto Archivos\bin\Debug\Proyecto Archivos.pdb
+C:\Users\narut\Documents\Proyecto Archivos\obj\Debug\Proyecto Archivos.csprojAssemblyReference.cache
+C:\Users\narut\Documents\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Form1.resources
+C:\Users\narut\Documents\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Form2.resources
+C:\Users\narut\Documents\Proyecto Archivos\obj\Debug\Proyecto_Archivos.Properties.Resources.resources
+C:\Users\narut\Documents\Proyecto Archivos\obj\Debug\Proyecto Archivos.csproj.GenerateResource.cache
+C:\Users\narut\Documents\Proyecto Archivos\obj\Debug\Proyecto Archivos.csproj.CoreCompileInputs.cache
+C:\Users\narut\Documents\Proyecto Archivos\obj\Debug\Proyecto Archivos.exe
+C:\Users\narut\Documents\Proyecto Archivos\obj\Debug\Proyecto Archivos.pdb
