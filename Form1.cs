@@ -76,7 +76,7 @@ namespace Proyecto_Archivos
                     }
                     break;
                 case 1: // Eliminamos la Entidad
-                    if(File.Exists(RutaCarpeta + "\\" + TextB_NombreEntidad.Text + ".dat"))
+                    if (File.Exists(RutaCarpeta + "\\" + TextB_NombreEntidad.Text + ".dat"))
                     {
                         MessageBox.Show("No se puede borrar la Entidad porque ya existen datos en la tabla");
                     }
@@ -199,7 +199,7 @@ namespace Proyecto_Archivos
             {
                 MessageBox.Show("No se puede eliminar esta Tabla porque tiene una o más tablas dependientes");
             }
-            
+
         }
 
         public void EliminaEntidad0(string NombreEntidad)
@@ -450,7 +450,7 @@ namespace Proyecto_Archivos
                 Nuevo.Longitud = Aux.Longitud;
                 EntidadHijo.Relaciones.Add(new Relacion(EntidadPadre.ObtenCadenaNombre(), Aux.ObtenCadenaNombre(), Nuevo.ObtenCadenaNombre()));
                 string CadenaMensaje = "Nueva Relacion:\nEntidad Padre: " + EntidadPadre.ObtenCadenaNombre() + "\nNombre Atributo Entidad Padre: " + Aux.ObtenCadenaNombre() + "\nEntidad Hijo" +
-                   EntidadHijo.ObtenCadenaNombre() +  "\nNombre Atributo Hijo: " + Nuevo.ObtenCadenaNombre();
+                   EntidadHijo.ObtenCadenaNombre() + "\nNombre Atributo Hijo: " + Nuevo.ObtenCadenaNombre();
                 MessageBox.Show(CadenaMensaje);
                 ManejoArchivo.GuardaRelaciones(D.Entidades, RutaRelaciones);
             }
@@ -724,7 +724,7 @@ namespace Proyecto_Archivos
                             DGV_Registros.Rows[j].Cells[E.Atributos[i].ObtenCadenaNombre()].Value = Cadena;
                         }
                         else if (E.Atributos[i].getTipoAtributo() == "D")
-                        { 
+                        {
                             double Numero = BitConverter.ToDouble(b, 0);
                             DGV_Registros.Rows[j].Cells[E.Atributos[i].ObtenCadenaNombre()].Value = Numero;
                         }
@@ -758,35 +758,10 @@ namespace Proyecto_Archivos
             bool Nuevo = true;
             if (indicePrimario != -1)
             {
-                for (int i = 0; i < Aux.Registros.Count; i++)
+                Nuevo = CompruebaSiExisteClaveRepetida(Aux, indicePrimario, NuevoRegistro);
+                if (!Nuevo)
                 {
-                    if (Aux.Atributos[indicePrimario].getTipoAtributo() == "E")
-                    {
-                        int Numero = BitConverter.ToInt32(Aux.Registros[i].Informacion[indicePrimario], 0);
-                        int Numero2 = BitConverter.ToInt32(NuevoRegistro.Informacion[indicePrimario], 0);
-                        if (Numero == Numero2)
-                        {
-                            Nuevo = false;
-                        }
-                    }
-                    else if (Aux.Atributos[indicePrimario].getTipoAtributo() == "C")
-                    {
-                        string Cadena = Encoding.UTF8.GetString(Aux.Registros[i].Informacion[indicePrimario], 0, Aux.Atributos[indicePrimario].Longitud);
-                        string Cadena2 = Encoding.UTF8.GetString(NuevoRegistro.Informacion[indicePrimario], 0, Aux.Atributos[indicePrimario].Longitud);
-                        if (Cadena.Equals(Cadena2))
-                        {
-                            Nuevo = false;
-                        }
-                    }
-                    else if (Aux.Atributos[indicePrimario].getTipoAtributo() == "D")
-                    {
-                        double Numero = BitConverter.ToDouble(Aux.Registros[i].Informacion[indicePrimario], 0);
-                        double Numero2 = BitConverter.ToDouble(NuevoRegistro.Informacion[indicePrimario], 0);
-                        if (Numero == Numero2)
-                        {
-                            Nuevo = false;
-                        }
-                    }
+                    MessageBox.Show("La clave primaria se encuentra repetida ");
                 }
             }
             if (indiceArbolPrimario != -1)
@@ -796,6 +771,14 @@ namespace Proyecto_Archivos
                 {
                     MessageBox.Show("Esta clave ya existe en el arbol");
                     Nuevo = false;
+                }
+            }
+            if (ObtenIndexLlaves(Aux, 'S') != -1)
+            {
+                Nuevo = CompruebaIntegridadReferencialInsercionTablaDependiente(Aux,NuevoRegistro);
+                if (!Nuevo)
+                {
+                    MessageBox.Show("No cumple Integridad Referencial al insertar un registro");
                 }
             }
             if (Nuevo)
@@ -871,9 +854,45 @@ namespace Proyecto_Archivos
             }
             else
             {
-                MessageBox.Show("Este registro ya existe");
+                MessageBox.Show("No se pudo agregar el registro a la tabla");
                 ActualizaDGVRegistros(Aux);
             }
+        }
+
+        private bool CompruebaSiExisteClaveRepetida(Entidad Aux, int Indice, Registro NuevoRegistro)
+        {
+            bool Nuevo = true;
+            for (int i = 0; i < Aux.Registros.Count; i++)
+            {
+                if (Aux.Atributos[Indice].getTipoAtributo() == "E")
+                {
+                    int Numero = BitConverter.ToInt32(Aux.Registros[i].Informacion[Indice], 0);
+                    int Numero2 = BitConverter.ToInt32(NuevoRegistro.Informacion[Indice], 0);
+                    if (Numero == Numero2)
+                    {
+                        Nuevo = false;
+                    }
+                }
+                else if (Aux.Atributos[Indice].getTipoAtributo() == "C")
+                {
+                    string Cadena = Encoding.UTF8.GetString(Aux.Registros[i].Informacion[Indice], 0, Aux.Atributos[Indice].Longitud);
+                    string Cadena2 = Encoding.UTF8.GetString(NuevoRegistro.Informacion[Indice], 0, Aux.Atributos[Indice].Longitud);
+                    if (Cadena.Equals(Cadena2))
+                    {
+                        Nuevo = false;
+                    }
+                }
+                else if (Aux.Atributos[Indice].getTipoAtributo() == "D")
+                {
+                    double Numero = BitConverter.ToDouble(Aux.Registros[i].Informacion[Indice], 0);
+                    double Numero2 = BitConverter.ToDouble(NuevoRegistro.Informacion[Indice], 0);
+                    if (Numero == Numero2)
+                    {
+                        Nuevo = false;
+                    }
+                }
+            }
+            return Nuevo;
         }
         private void ActualizaDGVIndicePrimario(Entidad aux)
         {
@@ -1117,7 +1136,6 @@ namespace Proyecto_Archivos
 
         private void AgregaIndiceSecundario(Entidad Aux, int indiceSecundario, Registro NuevoRegistro)
         {
-            //MessageBox.Show("La dirección del registro que estoy modificando es: " + NuevoRegistro.Direccion);
             Indice NuevoIndice = new Indice();
             NuevoIndice.Llave = NuevoRegistro.Informacion[indiceSecundario];
             List<Indice> IndicesSecundarios = ManejoArchivo.LeeIndiceBloquePrincipal(RutaArchivoIndiceSecundario, archivo, ObtenTipoDatoAtributo(Aux.Atributos[indiceSecundario])
@@ -1155,7 +1173,6 @@ namespace Proyecto_Archivos
                 List<long> Direcciones = new List<long>();
                 Direcciones.Add(NuevoRegistro.Direccion);
                 IndicesSecundarios.Add(NuevoIndice);
-                //MessageBox.Show(IndicesSecundarios.Count.ToString());
                 ManejoArchivo.EscribeBloqueIndices(RutaArchivoIndiceSecundario, archivo, IndicesSecundarios, 0);
                 ManejoArchivo.EscribeCajonSecundario(RutaArchivoIndiceSecundario, archivo, Posicion, Direcciones);
             }
@@ -1173,61 +1190,79 @@ namespace Proyecto_Archivos
             int ArbolS = ObtenIndex(Aux, 5);
             Registro Nuevo = ObtenNuevoRegistro(Aux);
             Nuevo.Direccion = RModificar.Direccion;
-            if (PRIMARIA != -1)
+            bool IntegridadReferencialCorrecta = true;
+            if (ObtenIndexLlaves(Aux, 'S') != -1)
             {
-                byte[] LlavePrimaria = RModificar.Informacion[PRIMARIA];
-                List<Indice> Indices = ManejoArchivo.LeeIndiceBloquePrincipal(RutaArchivoIndicePrimario, archivo, ObtenTipoDatoAtributo(Aux.Atributos[PRIMARIA]), Aux.Atributos[PRIMARIA].Longitud);
-                Indices.RemoveAt(ObtenIndexListaIndices(LlavePrimaria, ObtenTipoDatoAtributo(Aux.Atributos[PRIMARIA]), Indices));
-                Indice NuevoIndice = new Indice();
-                NuevoIndice.Desplazamiento = RModificar.Direccion;
-                NuevoIndice.Llave = Nuevo.Informacion[PRIMARIA];
-                Indices.Add(NuevoIndice);
-                List<Indice> ListaOrdenada = OrdenaIndices(Indices, ObtenTipoDatoAtributo(Aux.Atributos[PRIMARIA]));
-                ManejoArchivo.EscribeBloqueIndices(RutaArchivoIndicePrimario, archivo, ListaOrdenada, 0);
-                ActualizaDGVIndicePrimario(Aux);
-            }
-            if (ArbolP != -1)
-            {
-                int LlavePrimaria = BitConverter.ToInt32(RModificar.Informacion[ArbolP], 0);
-                ArbolPrimario = new Arbol(ManejoArchivo.ObtenNodos(Aux.Atributos[ArbolP], archivo, RutaArchivoArbolPrimario), Aux.Atributos[ArbolP]);
-                ManejadorArboles.EliminaEnArbolPrimario(Aux.Atributos[ArbolP], RutaArchivoArbolPrimario, LlavePrimaria, RutaArchivo);
-                ManejadorArboles.InsertaEnArbolPrimario(Aux.Atributos[ArbolP], RutaArchivoArbolPrimario, BitConverter.ToInt32(Nuevo.Informacion[ArbolP], 0), Nuevo.Direccion, RutaArchivo);
-                ActualizaDGVArbolPrimario(Aux);
-            }
-            if (ArbolS != -1)
-            {
-                int LlaveeSecundaria = BitConverter.ToInt32(RModificar.Informacion[ArbolS], 0);
-                ManejadorArboles.EliminaEnArbolSecundario(Aux.Atributos[ArbolS], RutaArchivoArbolSecundario, LlaveeSecundaria, RutaArchivo, Nuevo.Direccion);
-                ManejadorArboles.InsertaEnArbolSecundario(Aux.Atributos[ArbolS], RutaArchivoArbolSecundario, BitConverter.ToInt32(Nuevo.Informacion[ArbolS], 0), Nuevo.Direccion, RutaArchivo);
-                ActualizaDGVArbolSecundario(Aux);
-            }
-            if (SECUNDARIA != -1)
-            {
-                EliminaIndiceSecundario(Aux, SECUNDARIA, indiceRegistroSeleccionado);
-                AgregaIndiceSecundario(Aux, SECUNDARIA, Nuevo);
-            }
-            for (int i = 0; i < Nuevo.Informacion.Count; i++)
-            {
-                RModificar.Informacion[i] = Nuevo.Informacion[i];
-            }
-            for (int i = 0; i < Aux.Atributos.Count; i++)
-            {
-                if (Aux.Atributos[i].getTipoIndice() == "1")
+                IntegridadReferencialCorrecta = CompruebaIntegridadReferencialInsercionTablaDependiente(Aux, Nuevo);
+                if (!IntegridadReferencialCorrecta)
                 {
-                    Cve_Busqueda = true;
-                    index = i;
+                    MessageBox.Show("No se cumple la Integridad Referencial al modificar el registro");
                 }
             }
-            if (Cve_Busqueda)
+            if (IntegridadReferencialCorrecta && BuscaRelacionTablaPadre(Aux.ObtenCadenaNombre())) // En caso de que esta tabla tenga Relacion con alguna otra tabla y sirva como su "Tabla Padre"
             {
-                OrganizaRegistrosOrdenado(Aux, index);
+                MessageBox.Show("¡¡¡Modificando Llave Primaria en las tablas Dependientes!!!");
+                ActualizaClavePRegistrosHijos(Aux,BitConverter.ToInt32(Nuevo.Informacion[ObtenIndexLlaves(Aux,'P')],0),BitConverter.ToInt32(RModificar.Informacion[ObtenIndexLlaves(Aux,'P')],0));
             }
-            else
+            if (IntegridadReferencialCorrecta)
             {
-                OrganizaRegistros(Aux);
+                if (PRIMARIA != -1)
+                {
+                    byte[] LlavePrimaria = RModificar.Informacion[PRIMARIA];
+                    List<Indice> Indices = ManejoArchivo.LeeIndiceBloquePrincipal(RutaArchivoIndicePrimario, archivo, ObtenTipoDatoAtributo(Aux.Atributos[PRIMARIA]), Aux.Atributos[PRIMARIA].Longitud);
+                    Indices.RemoveAt(ObtenIndexListaIndices(LlavePrimaria, ObtenTipoDatoAtributo(Aux.Atributos[PRIMARIA]), Indices));
+                    Indice NuevoIndice = new Indice();
+                    NuevoIndice.Desplazamiento = RModificar.Direccion;
+                    NuevoIndice.Llave = Nuevo.Informacion[PRIMARIA];
+                    Indices.Add(NuevoIndice);
+                    List<Indice> ListaOrdenada = OrdenaIndices(Indices, ObtenTipoDatoAtributo(Aux.Atributos[PRIMARIA]));
+                    ManejoArchivo.EscribeBloqueIndices(RutaArchivoIndicePrimario, archivo, ListaOrdenada, 0);
+                    ActualizaDGVIndicePrimario(Aux);
+                }
+                if (ArbolP != -1)
+                {
+                    int LlavePrimaria = BitConverter.ToInt32(RModificar.Informacion[ArbolP], 0);
+                    ArbolPrimario = new Arbol(ManejoArchivo.ObtenNodos(Aux.Atributos[ArbolP], archivo, RutaArchivoArbolPrimario), Aux.Atributos[ArbolP]);
+                    ManejadorArboles.EliminaEnArbolPrimario(Aux.Atributos[ArbolP], RutaArchivoArbolPrimario, LlavePrimaria, RutaArchivo);
+                    ManejadorArboles.InsertaEnArbolPrimario(Aux.Atributos[ArbolP], RutaArchivoArbolPrimario, BitConverter.ToInt32(Nuevo.Informacion[ArbolP], 0), Nuevo.Direccion, RutaArchivo);
+                    ActualizaDGVArbolPrimario(Aux);
+                }
+                if (ArbolS != -1)
+                {
+                    int LlaveeSecundaria = BitConverter.ToInt32(RModificar.Informacion[ArbolS], 0);
+                    ManejadorArboles.EliminaEnArbolSecundario(Aux.Atributos[ArbolS], RutaArchivoArbolSecundario, LlaveeSecundaria, RutaArchivo, Nuevo.Direccion);
+                    ManejadorArboles.InsertaEnArbolSecundario(Aux.Atributos[ArbolS], RutaArchivoArbolSecundario, BitConverter.ToInt32(Nuevo.Informacion[ArbolS], 0), Nuevo.Direccion, RutaArchivo);
+                    ActualizaDGVArbolSecundario(Aux);
+                }
+                if (SECUNDARIA != -1)
+                {
+                    EliminaIndiceSecundario(Aux, SECUNDARIA, indiceRegistroSeleccionado);
+                    AgregaIndiceSecundario(Aux, SECUNDARIA, Nuevo);
+                }
+                for (int i = 0; i < Nuevo.Informacion.Count; i++)
+                {
+                    RModificar.Informacion[i] = Nuevo.Informacion[i];
+                }
+                for (int i = 0; i < Aux.Atributos.Count; i++)
+                {
+                    if (Aux.Atributos[i].getTipoIndice() == "1")
+                    {
+                        Cve_Busqueda = true;
+                        index = i;
+                    }
+                }
+                if (Cve_Busqueda)
+                {
+                    OrganizaRegistrosOrdenado(Aux, index);
+                }
+                else
+                {
+                    OrganizaRegistros(Aux);
+                }
+                ActualizaDGVRegistros(Aux);
+                ActualizaDGVEntidades();
             }
-            ActualizaDGVRegistros(Aux);
-            ActualizaDGVEntidades();
+            
 
         }
 
@@ -1280,87 +1315,95 @@ namespace Proyecto_Archivos
             int Cve_Busqueda = ObtenIndex(Aux, 1);
             int ArbolP = ObtenIndex(Aux, 4);
             int ArbolS = ObtenIndex(Aux, 5);
-            if (Primaria != -1 && Aux.Registros.Count > 0)
+            bool IntegridadReferencial;
+            IntegridadReferencial = CompruebaSiExisteLaClavePEnTablaDependiente(Aux, BitConverter.ToInt32(Aux.Registros[IndiceRegistro].Informacion[ObtenIndexLlaves(Aux,'P')],0));
+            if (!IntegridadReferencial)
             {
-                List<Indice> ListaIndices = ManejoArchivo.LeeIndiceBloquePrincipal(RutaArchivoIndicePrimario, archivo, ObtenTipoDatoAtributo(Aux.Atributos[Primaria]), Aux.Atributos[Primaria].Longitud);
-                int IndiceRegistroEnBloqueIndices = ObtenIndexListaIndices(Aux.Registros[IndiceRegistro].Informacion[Primaria], ObtenTipoDatoAtributo(Aux.Atributos[Primaria]), ListaIndices);
-                ListaIndices.RemoveAt(IndiceRegistroEnBloqueIndices);
-                List<Indice> ListaOrdenadaIndices = OrdenaIndices(ListaIndices, ObtenTipoDatoAtributo(Aux.Atributos[Primaria]));
-                EscribeIndices(ListaOrdenadaIndices, ObtenTipoDatoAtributo(Aux.Atributos[Primaria]), RutaArchivoIndicePrimario);
-                ActualizaDGVIndicePrimario(Aux);
-            }
-            if (Secundaria != -1)
-            {
-                EliminaIndiceSecundario(Aux, Secundaria, IndiceRegistro);
-                DGV_CajonIndiceSecundario.Rows.Clear();
-            }
-            if (ArbolP != -1)
-            {
-                ArbolPrimario = new Arbol(ManejoArchivo.ObtenNodos(Aux.Atributos[ArbolP], archivo, RutaArchivoArbolPrimario), Aux.Atributos[ArbolP]);
-                if (ArbolPrimario.Nodos.Count == 1)
+                if (Primaria != -1 && Aux.Registros.Count > 0)
                 {
-                    ArbolPrimario.Nodos[0].EliminaDatoEnHoja(BitConverter.ToInt32(Aux.Registros[IndiceRegistro].Informacion[ArbolP], 0));
-                    ManejoArchivo.EscribeNodo(ArbolPrimario.Nodos[0], archivo, RutaArchivoArbolPrimario);
-                    if (ArbolPrimario.Nodos[0].ObtenNumeroLlavesValidas() == 0)
-                    {
-                        ManejoArchivo.CreaArchivo(RutaArchivoArbolPrimario, archivo);
-                        Aux.Atributos[ArbolP].Direccion_Indice = -1;
-                        ManejoArchivo.ModificaAtributo(Aux.Atributos[ArbolP], RutaArchivo, archivo);
-                    }
-                }
-                else
-                {
-                    ManejadorArboles.EliminaEnArbolPrimario(Aux.Atributos[ArbolP], RutaArchivoArbolPrimario, BitConverter.ToInt32(Aux.Registros[IndiceRegistro].Informacion[ArbolP], 0), RutaArchivo);
-                }
-                ActualizaDGVArbolPrimario(Aux);
-            }
-            if (ArbolS != -1)
-            {
-                ManejadorArboles.EliminaEnArbolSecundario(Aux.Atributos[ArbolS], RutaArchivoArbolSecundario, BitConverter.ToInt32(Aux.Registros[IndiceRegistro].Informacion[ArbolS], 0), RutaArchivo, Aux.Registros[IndiceRegistro].Direccion);
-                ActualizaDGVArbolSecundario(Aux);
-            }
-            Aux.Registros.RemoveAt(IndiceRegistro);
-
-            if (Cve_Busqueda != -1)
-            {
-                OrganizaRegistrosOrdenado(Aux, Cve_Busqueda);
-            }
-            else
-            {
-                OrganizaRegistros(Aux);
-            }
-
-            if (Aux.Registros.Count == 0)
-            {
-                Aux.Direccion_Dato = -1;
-                ManejoArchivo.CreaArchivo(RutaArchivoDatos, archivo);
-                for (int i = 0; i < Aux.Atributos.Count; i++)
-                {
-                    Aux.Atributos[i].Direccion_Indice = -1;
-                    ManejoArchivo.ModificaAtributo(Aux.Atributos[i], RutaArchivo, archivo);
-                }
-                ManejoArchivo.ModificaEntidad(Aux, RutaArchivo, archivo);
-                ManejoArchivo.ModificaEntidad(Aux, RutaArchivo, archivo);
-                if (Primaria != -1)
-                {
-                    ManejoArchivo.EscribeBytesInicialesArchivoIndice(RutaArchivoIndicePrimario, archivo, 0);
+                    List<Indice> ListaIndices = ManejoArchivo.LeeIndiceBloquePrincipal(RutaArchivoIndicePrimario, archivo, ObtenTipoDatoAtributo(Aux.Atributos[Primaria]), Aux.Atributos[Primaria].Longitud);
+                    int IndiceRegistroEnBloqueIndices = ObtenIndexListaIndices(Aux.Registros[IndiceRegistro].Informacion[Primaria], ObtenTipoDatoAtributo(Aux.Atributos[Primaria]), ListaIndices);
+                    ListaIndices.RemoveAt(IndiceRegistroEnBloqueIndices);
+                    List<Indice> ListaOrdenadaIndices = OrdenaIndices(ListaIndices, ObtenTipoDatoAtributo(Aux.Atributos[Primaria]));
+                    EscribeIndices(ListaOrdenadaIndices, ObtenTipoDatoAtributo(Aux.Atributos[Primaria]), RutaArchivoIndicePrimario);
+                    ActualizaDGVIndicePrimario(Aux);
                 }
                 if (Secundaria != -1)
                 {
-                    ManejoArchivo.CreaArchivo(RutaArchivoIndiceSecundario, archivo);
-                    ManejoArchivo.EscribeBytesInicialesArchivoIndice(RutaArchivoIndiceSecundario, archivo, 0);
+                    EliminaIndiceSecundario(Aux, Secundaria, IndiceRegistro);
+                    DGV_CajonIndiceSecundario.Rows.Clear();
                 }
                 if (ArbolP != -1)
                 {
-                    ManejoArchivo.CreaArchivo(RutaArchivoArbolPrimario, archivo);
+                    ArbolPrimario = new Arbol(ManejoArchivo.ObtenNodos(Aux.Atributos[ArbolP], archivo, RutaArchivoArbolPrimario), Aux.Atributos[ArbolP]);
+                    if (ArbolPrimario.Nodos.Count == 1)
+                    {
+                        ArbolPrimario.Nodos[0].EliminaDatoEnHoja(BitConverter.ToInt32(Aux.Registros[IndiceRegistro].Informacion[ArbolP], 0));
+                        ManejoArchivo.EscribeNodo(ArbolPrimario.Nodos[0], archivo, RutaArchivoArbolPrimario);
+                        if (ArbolPrimario.Nodos[0].ObtenNumeroLlavesValidas() == 0)
+                        {
+                            ManejoArchivo.CreaArchivo(RutaArchivoArbolPrimario, archivo);
+                            Aux.Atributos[ArbolP].Direccion_Indice = -1;
+                            ManejoArchivo.ModificaAtributo(Aux.Atributos[ArbolP], RutaArchivo, archivo);
+                        }
+                    }
+                    else
+                    {
+                        ManejadorArboles.EliminaEnArbolPrimario(Aux.Atributos[ArbolP], RutaArchivoArbolPrimario, BitConverter.ToInt32(Aux.Registros[IndiceRegistro].Informacion[ArbolP], 0), RutaArchivo);
+                    }
+                    ActualizaDGVArbolPrimario(Aux);
                 }
-            }
-            ActualizaDGVRegistros(Aux);
-            ActualizaDGVAtributos(Aux);
-            ActualizaDGVEntidades();
-            ActualizaDGVBloquePrincipalIndiceSecundario(Aux);
-        }
+                if (ArbolS != -1)
+                {
+                    ManejadorArboles.EliminaEnArbolSecundario(Aux.Atributos[ArbolS], RutaArchivoArbolSecundario, BitConverter.ToInt32(Aux.Registros[IndiceRegistro].Informacion[ArbolS], 0), RutaArchivo, Aux.Registros[IndiceRegistro].Direccion);
+                    ActualizaDGVArbolSecundario(Aux);
+                }
+                Aux.Registros.RemoveAt(IndiceRegistro);
 
+                if (Cve_Busqueda != -1)
+                {
+                    OrganizaRegistrosOrdenado(Aux, Cve_Busqueda);
+                }
+                else
+                {
+                    OrganizaRegistros(Aux);
+                }
+
+                if (Aux.Registros.Count == 0)
+                {
+                    Aux.Direccion_Dato = -1;
+                    ManejoArchivo.CreaArchivo(RutaArchivoDatos, archivo);
+                    for (int i = 0; i < Aux.Atributos.Count; i++)
+                    {
+                        Aux.Atributos[i].Direccion_Indice = -1;
+                        ManejoArchivo.ModificaAtributo(Aux.Atributos[i], RutaArchivo, archivo);
+                    }
+                    ManejoArchivo.ModificaEntidad(Aux, RutaArchivo, archivo);
+                    ManejoArchivo.ModificaEntidad(Aux, RutaArchivo, archivo);
+                    if (Primaria != -1)
+                    {
+                        ManejoArchivo.EscribeBytesInicialesArchivoIndice(RutaArchivoIndicePrimario, archivo, 0);
+                    }
+                    if (Secundaria != -1)
+                    {
+                        ManejoArchivo.CreaArchivo(RutaArchivoIndiceSecundario, archivo);
+                        ManejoArchivo.EscribeBytesInicialesArchivoIndice(RutaArchivoIndiceSecundario, archivo, 0);
+                    }
+                    if (ArbolP != -1)
+                    {
+                        ManejoArchivo.CreaArchivo(RutaArchivoArbolPrimario, archivo);
+                    }
+                }
+                ActualizaDGVRegistros(Aux);
+                ActualizaDGVAtributos(Aux);
+                ActualizaDGVEntidades();
+                ActualizaDGVBloquePrincipalIndiceSecundario(Aux);
+            }
+            else
+            {
+                MessageBox.Show("Existen Registros en tablas Dependientes con el valor de la Llave Primaria de esta Entidad, intenta eliminando primero esos registros.");
+            }
+        }
         private void EliminaIndiceSecundario(Entidad Aux, int Secundaria, int IndiceRegistro)
         {
             try
@@ -1417,11 +1460,11 @@ namespace Proyecto_Archivos
                         index = j;
                     }
                 }
-                else if(TipoDato == 3)
+                else if (TipoDato == 3)
                 {
                     double Numero1 = BitConverter.ToDouble(Llave, 0);
                     double Numero2 = BitConverter.ToDouble(i.Llave, 0);
-                    if(Numero1 == Numero2)
+                    if (Numero1 == Numero2)
                     {
                         index = j;
                     }
@@ -1583,11 +1626,11 @@ namespace Proyecto_Archivos
         /// <returns>Regresa Verdadero si tiene Relación con alguna tabla, y Falso en caso contrario.</returns>
         public bool BuscaRelacionTablaPadre(string NombreTabla)
         {
-            foreach(Entidad e in D.Entidades)
+            foreach (Entidad e in D.Entidades)
             {
-                foreach(Relacion r in e.Relaciones)
+                foreach (Relacion r in e.Relaciones)
                 {
-                    if(r.NombreTablaPadre == NombreTabla)
+                    if (r.NombreTablaPadre == NombreTabla)
                     {
                         return true;
                     }
@@ -1602,17 +1645,224 @@ namespace Proyecto_Archivos
         /// <returns></returns>
         public void ActualizaRelacionTablaPadre(string NombreTabla, string NuevoNombreTabla)
         {
-            foreach(Entidad e in D.Entidades)
+            foreach (Entidad e in D.Entidades)
             {
-                foreach(Relacion R in e.Relaciones)
+                foreach (Relacion R in e.Relaciones)
                 {
-                    if(R.NombreTablaPadre == NombreTabla)
+                    if (R.NombreTablaPadre == NombreTabla)
                     {
                         R.NombreTablaPadre = NuevoNombreTabla;
                     }
                 }
             }
             ManejoArchivo.GuardaRelaciones(D.Entidades, RutaRelaciones);
+        }
+
+        /// <summary>
+        /// Este método realiza la búsqueda de la clave ingresada en la tabla "Padre", regresa "true" si la clave existe en la tabla y "false" en caso contrario.
+        /// </summary>
+        /// <param name="ClaveP"></param>
+        /// <param name="E"></param>
+        /// <returns></returns>
+        public bool BuscaExistenciaClavePrimaria(int ClaveP, Entidad E)
+        {
+            bool Resultado = false;
+            int IndexLlaveP = ObtenIndexLlaves(E, 'P');
+            if (IndexLlaveP != -1)
+            {
+                foreach (Registro R in E.Registros)
+                {
+                    if (BitConverter.ToInt32(R.Informacion[IndexLlaveP], 0) == ClaveP)
+                    {
+                        Resultado = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Esta entidad no tiene ningún atributo de tipo Llave Primaria");
+            }
+            return Resultado;
+        }
+        /// <summary>
+        /// En este método busco el tipo de llave ingresado en los atributos de la Entidad. Regresa -1 si no encuentra el tipo de Llave, en caso contrario regresa el indice de el atributo.
+        /// </summary>
+        /// <param name="E"></param>
+        /// <param name="TipoLlave"></param>
+        /// <returns></returns>
+
+        public int ObtenIndexLlaves(Entidad E, char TipoLlave)
+        {
+            int index = -1;
+            for (int i = 0; i < E.Atributos.Count; i++)
+            {
+                if (E.Atributos[i].Tipo_Llave == TipoLlave)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        }
+
+        /// <summary>
+        /// En este método busco la Entidad con el nombre ingresado en la lista de Entidades.
+        /// </summary>
+        /// <param name="Entidades"></param>
+        /// <param name="NombreEntidad"></param>
+        /// <returns></returns>
+        public Entidad EncuentraEntidadPadre(List<Entidad> Entidades, string NombreEntidad)
+        {
+            Entidad Res = null;
+
+            foreach (Entidad e in Entidades)
+            {
+                if (NombreEntidad == e.ObtenCadenaNombre())
+                {
+                    Res = e;
+                    break;
+                }
+            }
+            return Res;
+        }
+
+        /// <summary>
+        /// Este método busca en la Entidad la relación que tiene con la Entidad Padre mediante el atributo Hijo. Regresa la Relación.
+        /// </summary>
+        /// <param name="EntidadDependiente"></param>
+        /// <param name="NombreAtributoEntidadHijo"></param>
+        /// <returns></returns>
+        public Relacion BuscaRelacion(Entidad EntidadDependiente, string NombreAtributoEntidadHijo)
+        {
+            Relacion Res = null;
+            foreach (Relacion R in EntidadDependiente.Relaciones)
+            {
+                if (R.NombreAtributoTablaHijo == NombreAtributoEntidadHijo)
+                {
+                    Res = R;
+                    return Res;
+                }
+            }
+            return Res;
+        }
+        #endregion
+
+        #region Métodos para integridad Referencial
+        bool CompruebaIntegridadReferencialInsercionTablaDependiente(Entidad Ent, Registro RegistroInsertar)
+        {
+            bool Resultado = false;
+            for (int i = 0; i < Ent.Atributos.Count; i++)
+            {
+                if (Ent.Atributos[i].Tipo_Llave == 'S')// Entramos aquí en caso de que encontremos una entidad de tipo Llave Fóranea
+                {
+                    Relacion R = BuscaRelacion(Ent , Ent.Atributos[i].ObtenCadenaNombre()); // Buscamos la relación que une la tabla padre con la tabla hijo mediante el atributo
+                    if (R != null)
+                    {
+                        Entidad EntidadPadre = EncuentraEntidadPadre(D.Entidades, R.NombreTablaPadre);
+                        
+                        if (EntidadPadre != null)
+                        {
+                            string RutaArchivoDatos = RutaCarpeta + "\\" + EntidadPadre.ClaveEnString() + ".dat";
+                            ManejoArchivo.LeeDatos(EntidadPadre,RutaArchivoDatos , archivo);
+                            Resultado = BuscaExistenciaClavePrimaria(BitConverter.ToInt32(RegistroInsertar.Informacion[i], 0), EntidadPadre);
+                            if (!Resultado)
+                            {
+                                MessageBox.Show("No se encontró ninguna llave primaria con el valor de: " + BitConverter.ToInt32(RegistroInsertar.Informacion[i], 0) +
+                                    "\n en la Tabla Padre: " + EntidadPadre.ObtenCadenaNombre());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Resultado = false;
+                        return Resultado;
+                    }
+                }
+            }
+            return Resultado;
+        }
+        List<Entidad> ObtenEntidadesConRelacionTablaPadre(Entidad TablaPadre, List<Entidad> Entidades)
+        {
+            List<Entidad> EntidadesL = new List<Entidad>();
+            foreach(Entidad e in Entidades)
+            {
+                foreach(Relacion r in e.Relaciones)
+                {
+                    if(r.NombreTablaPadre == TablaPadre.ObtenCadenaNombre())
+                    {
+                        EntidadesL.Add(e);
+                    }
+                }
+            }
+            return EntidadesL;
+        }
+        public void ActualizaClavePRegistrosHijos(Entidad EntidadPadre, int ValorRegistroPadre, int ValorAntiguoRegistroPadre)
+        {
+            List<Entidad> ListaEntidadesHijas = ObtenEntidadesConRelacionTablaPadre(EntidadPadre, D.Entidades);
+            MessageBox.Show("Num de Entidades Dependientes: " + ListaEntidadesHijas.Count);
+            foreach(Entidad e in ListaEntidadesHijas)
+            {
+                string RutaEntidad = RutaCarpeta + "\\" + e.ClaveEnString() + ".dat";
+                foreach (Relacion r in e.Relaciones)
+                {
+                    if(r.NombreTablaPadre == EntidadPadre.ObtenCadenaNombre())
+                    {
+                        int index = ObtenIndiceAtributoString(r.NombreAtributoTablaHijo, e);
+                        if(index != -1)
+                        {
+                            foreach(Registro Reg in e.Registros)
+                            {
+                                if(BitConverter.ToInt32(Reg.Informacion[index],0) == ValorAntiguoRegistroPadre)
+                                {
+                                    Reg.Informacion[index] = BitConverter.GetBytes(ValorRegistroPadre);
+                                    ManejoArchivo.ModificaRegistro(Reg, RutaEntidad, archivo);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public int ObtenIndiceAtributoString(string NombreAtributo,Entidad Ent)
+        {
+            int index = -1;
+            for (int i = 0; i < Ent.Atributos.Count; i++)
+            {
+                if(Ent.Atributos[i].ObtenCadenaNombre() == NombreAtributo)
+                {
+                    index = i;
+                    return index;
+                }
+            }
+            return index;
+        }
+
+        public bool CompruebaSiExisteLaClavePEnTablaDependiente(Entidad TablaPadre, int ValorAEliminar)
+        {
+            bool Existe = false;
+            List<Entidad> EntidadesDep = ObtenEntidadesConRelacionTablaPadre(TablaPadre, D.Entidades);
+            foreach(Entidad e in EntidadesDep)
+            {
+                foreach (Relacion r in e.Relaciones)
+                {
+                    if (r.NombreTablaPadre == TablaPadre.ObtenCadenaNombre())
+                    {
+                        int index = ObtenIndiceAtributoString(r.NombreAtributoTablaHijo, e);
+                        if (index != -1)
+                        {
+                            foreach (Registro Reg in e.Registros)
+                            {
+                                if (BitConverter.ToInt32(Reg.Informacion[index], 0) == ValorAEliminar)
+                                {
+                                    Existe = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return Existe;
         }
         #endregion
     }
