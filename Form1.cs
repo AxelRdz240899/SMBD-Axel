@@ -76,19 +76,26 @@ namespace Proyecto_Archivos
                     }
                     break;
                 case 1: // Eliminamos la Entidad
-                    if (string.IsNullOrEmpty(TextB_NombreEntidad.Text))
+                    if(File.Exists(RutaCarpeta + "\\" + TextB_NombreEntidad.Text + ".dat"))
                     {
-                        MessageBox.Show("Ingrese el nombre de la entidad");
+                        MessageBox.Show("No se puede borrar la Entidad porque ya existen datos en la tabla");
                     }
                     else
                     {
-                        if (D.Entidades.Count > 1)
+                        if (string.IsNullOrEmpty(TextB_NombreEntidad.Text))
                         {
-                            EliminaEntidad(TextB_NombreEntidad.Text);
+                            MessageBox.Show("Ingrese el nombre de la entidad");
                         }
                         else
                         {
-                            EliminaEntidad0(TextB_NombreEntidad.Text);
+                            if (D.Entidades.Count > 1)
+                            {
+                                EliminaEntidad(TextB_NombreEntidad.Text);
+                            }
+                            else
+                            {
+                                EliminaEntidad0(TextB_NombreEntidad.Text);
+                            }
                         }
                     }
                     break;
@@ -153,7 +160,6 @@ namespace Proyecto_Archivos
             if (nuevaEntidad == true)
             {
                 D.Entidades.Add(NuevaEntidad);
-                /* Ahora tenemos que ordenar las entidades por orden alfabetico */
                 ManejoArchivo.GuardaEntidad(NuevaEntidad, RutaArchivo, archivo);
                 ReorganizaEntidades();
             }
@@ -985,7 +991,7 @@ namespace Proyecto_Archivos
                     }
                     else if (E.Atributos[index].getTipoAtributo() == "D")
                     {
-                        E.Registros = E.Registros.OrderBy(o => BitConverter.ToSingle(o.Informacion[index], 0)).ToList();
+                        E.Registros = E.Registros.OrderBy(o => BitConverter.ToDouble(o.Informacion[index], 0)).ToList();
                     }
                     for (int i = 0; i < E.Registros.Count - 1; i++)
                     {
