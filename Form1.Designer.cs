@@ -132,6 +132,11 @@
             this.ColumnaAtributoHijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnaTablaPadre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnaAtributoTablaPadre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Pestaña_Consultas = new System.Windows.Forms.TabPage();
+            this.DGV_ConsultasSQL = new System.Windows.Forms.DataGridView();
+            this.BT_EjecutarConsulta = new System.Windows.Forms.Button();
+            this.TextB_Consulta = new System.Windows.Forms.TextBox();
+            this.LB_Consulta = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -139,6 +144,7 @@
             this.abrirArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NuevoArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renombrarBDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Pestañas.SuspendLayout();
             this.Pestaña_Entidades.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Entidades)).BeginInit();
@@ -158,6 +164,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGV_ArbolSecundario)).BeginInit();
             this.Pestaña_Relaciones.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Relaciones)).BeginInit();
+            this.Pestaña_Consultas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_ConsultasSQL)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -171,6 +179,7 @@
             this.Pestañas.Controls.Add(this.Pestaña_ArbolPrimario);
             this.Pestañas.Controls.Add(this.Pestaña_ArbolSecundario);
             this.Pestañas.Controls.Add(this.Pestaña_Relaciones);
+            this.Pestañas.Controls.Add(this.Pestaña_Consultas);
             this.Pestañas.Location = new System.Drawing.Point(12, 27);
             this.Pestañas.Name = "Pestañas";
             this.Pestañas.SelectedIndex = 0;
@@ -476,9 +485,7 @@
             "2 - Indice Primario",
             "3 - Indice Secundario",
             "4 - Indice Arbol Primario",
-            "5 - Indice Arbol Secundario",
-            "6 - Llave Primaria (PK)",
-            "7 - Llave Secundaria(FK)"});
+            "5 - Indice Arbol Secundario"});
             this.ComboB_TipoIndiceAtributo.Location = new System.Drawing.Point(222, 57);
             this.ComboB_TipoIndiceAtributo.Name = "ComboB_TipoIndiceAtributo";
             this.ComboB_TipoIndiceAtributo.Size = new System.Drawing.Size(121, 21);
@@ -1107,6 +1114,56 @@
             this.ColumnaAtributoTablaPadre.Name = "ColumnaAtributoTablaPadre";
             this.ColumnaAtributoTablaPadre.ReadOnly = true;
             // 
+            // Pestaña_Consultas
+            // 
+            this.Pestaña_Consultas.Controls.Add(this.DGV_ConsultasSQL);
+            this.Pestaña_Consultas.Controls.Add(this.BT_EjecutarConsulta);
+            this.Pestaña_Consultas.Controls.Add(this.TextB_Consulta);
+            this.Pestaña_Consultas.Controls.Add(this.LB_Consulta);
+            this.Pestaña_Consultas.Location = new System.Drawing.Point(4, 22);
+            this.Pestaña_Consultas.Name = "Pestaña_Consultas";
+            this.Pestaña_Consultas.Size = new System.Drawing.Size(1006, 533);
+            this.Pestaña_Consultas.TabIndex = 7;
+            this.Pestaña_Consultas.Text = "Consultas SQL";
+            this.Pestaña_Consultas.UseVisualStyleBackColor = true;
+            // 
+            // DGV_ConsultasSQL
+            // 
+            this.DGV_ConsultasSQL.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_ConsultasSQL.Location = new System.Drawing.Point(486, 50);
+            this.DGV_ConsultasSQL.Name = "DGV_ConsultasSQL";
+            this.DGV_ConsultasSQL.Size = new System.Drawing.Size(505, 466);
+            this.DGV_ConsultasSQL.TabIndex = 3;
+            // 
+            // BT_EjecutarConsulta
+            // 
+            this.BT_EjecutarConsulta.Location = new System.Drawing.Point(13, 263);
+            this.BT_EjecutarConsulta.Name = "BT_EjecutarConsulta";
+            this.BT_EjecutarConsulta.Size = new System.Drawing.Size(101, 38);
+            this.BT_EjecutarConsulta.TabIndex = 2;
+            this.BT_EjecutarConsulta.Text = "Ejecutar Consulta";
+            this.BT_EjecutarConsulta.UseVisualStyleBackColor = true;
+            this.BT_EjecutarConsulta.Click += new System.EventHandler(this.BT_EjecutarConsulta_Click);
+            // 
+            // TextB_Consulta
+            // 
+            this.TextB_Consulta.Location = new System.Drawing.Point(13, 64);
+            this.TextB_Consulta.Multiline = true;
+            this.TextB_Consulta.Name = "TextB_Consulta";
+            this.TextB_Consulta.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TextB_Consulta.Size = new System.Drawing.Size(441, 180);
+            this.TextB_Consulta.TabIndex = 1;
+            // 
+            // LB_Consulta
+            // 
+            this.LB_Consulta.AutoSize = true;
+            this.LB_Consulta.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LB_Consulta.Location = new System.Drawing.Point(9, 37);
+            this.LB_Consulta.Name = "LB_Consulta";
+            this.LB_Consulta.Size = new System.Drawing.Size(88, 24);
+            this.LB_Consulta.TabIndex = 0;
+            this.LB_Consulta.Text = "Consulta:";
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1135,7 +1192,8 @@
             this.archivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.abrirArchivoToolStripMenuItem,
             this.NuevoArchivoToolStripMenuItem,
-            this.cerrarArchivoToolStripMenuItem});
+            this.cerrarArchivoToolStripMenuItem,
+            this.renombrarBDToolStripMenuItem});
             this.archivoToolStripMenuItem.Name = "archivoToolStripMenuItem";
             this.archivoToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.archivoToolStripMenuItem.Text = "Archivo";
@@ -1160,6 +1218,13 @@
             this.cerrarArchivoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.cerrarArchivoToolStripMenuItem.Text = "Cerrar Archivo";
             this.cerrarArchivoToolStripMenuItem.Click += new System.EventHandler(this.CerrarArchivoToolStripMenuItem_Click);
+            // 
+            // renombrarBDToolStripMenuItem
+            // 
+            this.renombrarBDToolStripMenuItem.Name = "renombrarBDToolStripMenuItem";
+            this.renombrarBDToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.renombrarBDToolStripMenuItem.Text = "Renombrar BD";
+            this.renombrarBDToolStripMenuItem.Click += new System.EventHandler(this.renombrarBDToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1195,6 +1260,9 @@
             this.Pestaña_Relaciones.ResumeLayout(false);
             this.Pestaña_Relaciones.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Relaciones)).EndInit();
+            this.Pestaña_Consultas.ResumeLayout(false);
+            this.Pestaña_Consultas.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_ConsultasSQL)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -1314,6 +1382,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnaAtributoHijo;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnaTablaPadre;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnaAtributoTablaPadre;
+        private System.Windows.Forms.TabPage Pestaña_Consultas;
+        private System.Windows.Forms.Label LB_Consulta;
+        private System.Windows.Forms.Button BT_EjecutarConsulta;
+        private System.Windows.Forms.TextBox TextB_Consulta;
+        private System.Windows.Forms.DataGridView DGV_ConsultasSQL;
+        private System.Windows.Forms.ToolStripMenuItem renombrarBDToolStripMenuItem;
     }
 }
 
