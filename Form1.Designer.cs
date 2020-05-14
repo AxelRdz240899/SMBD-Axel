@@ -1201,30 +1201,29 @@
             // abrirArchivoToolStripMenuItem
             // 
             this.abrirArchivoToolStripMenuItem.Name = "abrirArchivoToolStripMenuItem";
-            this.abrirArchivoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.abrirArchivoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.abrirArchivoToolStripMenuItem.Text = "Abrir Archivo";
             this.abrirArchivoToolStripMenuItem.Click += new System.EventHandler(this.AbrirArchivoToolStripMenuItem_Click);
             // 
             // NuevoArchivoToolStripMenuItem
             // 
             this.NuevoArchivoToolStripMenuItem.Name = "NuevoArchivoToolStripMenuItem";
-            this.NuevoArchivoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.NuevoArchivoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.NuevoArchivoToolStripMenuItem.Text = "Nuevo Archivo";
             this.NuevoArchivoToolStripMenuItem.Click += new System.EventHandler(this.NuevoArchivoToolStripMenuItem_Click);
             // 
             // cerrarArchivoToolStripMenuItem
             // 
             this.cerrarArchivoToolStripMenuItem.Name = "cerrarArchivoToolStripMenuItem";
-            this.cerrarArchivoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.cerrarArchivoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cerrarArchivoToolStripMenuItem.Text = "Cerrar Archivo";
             this.cerrarArchivoToolStripMenuItem.Click += new System.EventHandler(this.CerrarArchivoToolStripMenuItem_Click);
             // 
             // renombrarBDToolStripMenuItem
             // 
             this.renombrarBDToolStripMenuItem.Name = "renombrarBDToolStripMenuItem";
-            this.renombrarBDToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.renombrarBDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.renombrarBDToolStripMenuItem.Text = "Renombrar BD";
-            this.renombrarBDToolStripMenuItem.Click += new System.EventHandler(this.renombrarBDToolStripMenuItem_Click);
             // 
             // Form1
             // 

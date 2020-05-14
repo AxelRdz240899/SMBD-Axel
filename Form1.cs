@@ -402,7 +402,7 @@ namespace Proyecto_Archivos
                             TextB_NombreAtributo.Clear();
                         }
                     }
-                    if((ObtenIndexLlaves(D.Entidades.ElementAt(ComboB_EntidadAtributo.SelectedIndex), 'P') != -1) && CB_TipoLlave.Text[0] == 'P')
+                    if ((ObtenIndexLlaves(D.Entidades.ElementAt(ComboB_EntidadAtributo.SelectedIndex), 'P') != -1) && CB_TipoLlave.Text[0] == 'P')
                     {
                         NuevoAtributo = false;
                         MessageBox.Show("Ya existe un atributo llave Primaria en esta Tabla");
@@ -471,7 +471,7 @@ namespace Proyecto_Archivos
                 {
                     if (a.ObtenCadenaNombre() == AuxBusqueda)
                     {
-                        if ((ObtenIndexLlaves(aux, 'P') != -1) && CB_TipoLlave.Text[0] == 'P' && (a.Tipo_Llave!= 'P'))
+                        if ((ObtenIndexLlaves(aux, 'P') != -1) && CB_TipoLlave.Text[0] == 'P' && (a.Tipo_Llave != 'P'))
                         {
                             MessageBox.Show("Ya existe un atributo llave Primaria en esta Tabla, intente de nuevo");
                         }
@@ -560,7 +560,7 @@ namespace Proyecto_Archivos
             foreach (var c in Cadena)
             {
                 Auxiliar[cont] = c;
-                cont++; 
+                cont++;
             }
             return Auxiliar;
         }
@@ -1786,6 +1786,7 @@ namespace Proyecto_Archivos
             return Res;
         }
         #endregion
+
         #region Métodos para integridad Referencial
         bool CompruebaIntegridadReferencialInsercionTablaDependiente(Entidad Ent, Registro RegistroInsertar)
         {
@@ -1903,23 +1904,354 @@ namespace Proyecto_Archivos
             return Existe;
         }
         #endregion
-        #region
+        #region Métodos para Consultas SQL
+
         private void BT_EjecutarConsulta_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(TextB_Consulta.Text);
             String[] Cadena = TextB_Consulta.Text.Split(' ');
+            List<string> Cadenas = Cadena.ToList();
             string CadenaAux = "";
-            for(int i = 0; i < Cadena.Length; i++)
+            List<string> ColumnasAMostrar = new List<string>();
+            List<string> TablasAConsultar = new List<string>();
+            string Operador = "";
+            string AtributoAEvaluarenWhere = "";
+            string AtributoAComparar = "";
+            string ValorNumerico = "";
+            int ConsultaWhere = 1; // 1: La más Básica, 2: Ya con where, 3: Con Inner Join
+            for (int i = 0; i < Cadenas.Count; i++)//Aquí le quito los espacios a la Tabla
             {
-                CadenaAux += Cadena[i] + "\n";
+                if (Cadenas[i] == " ")
+                {
+                    Cadenas.RemoveAt(i);
+                    i--;
+                }
+                CadenaAux += Cadenas[i] + "\n";
             }
-            MessageBox.Show(CadenaAux);
+            int indexFrom = BuscaIndexPalabra(Cadenas, "From");
+            int indexWhere = BuscaIndexPalabra(Cadenas, "Where");
+            int indexInner = BuscaIndexPalabra(Cadenas, "Inner");
+            int indexJoin = indexInner + 1;
+
+            //MessageBox.Show("Tamaño de la lista: " + Cadenas.Count + "\n" + CadenaAux);
+            if (Cadenas[0] == "Select" && indexFrom != -1)
+            {
+                MessageBox.Show("IndexFrom: " + indexFrom);
+                //En esta sección obtenemos las columnas que vamos a mostrar en el DGV
+                for (int i = 1; i < indexFrom; i++)
+                {
+                    if (indexFrom == 2)
+                    {
+                        if(Cadenas[i] == "*")
+                        {
+                            ColumnasAMostrar.Add(Cadenas[i]);
+                        }
+                        else
+                        {
+                            if (Cadenas[i].Contains(','))
+                            {
+
+                            }
+                            ColumnasAMostrar = Cadenas[i].Split(',').ToList();
+                        }
+                        
+                        break;
+                    }
+                    else
+                    {
+                        if (Cadenas[i].Contains(","))
+                        {
+                            ColumnasAMostrar.Add(Cadenas[i].Remove(Cadenas[i].Length - 1, 1));
+
+                        }
+                        else
+                        {
+                            ColumnasAMostrar.Add(Cadenas[i]);
+                        }
+                    }
+                }
+
+                //En esta sección obtenemos la Tabla de la que vamos a sacar la información
+
+                if (indexInner != -1)// En caso de que tengamos un Inner JOIN
+                {
+                    ConsultaWhere = 3;
+                    for (int i = indexFrom; i < indexInner; i++)
+                    {
+
+                    }
+                }
+                else // En caso de que no tengamos un Inner Join
+                {
+                    if (indexWhere != -1) // En caso de que tengamos un Where
+                    {
+                        ConsultaWhere = 2;
+                        if (indexWhere - indexFrom == 2)
+                        {
+                            TablasAConsultar.Add(Cadenas[indexWhere - 1]);
+                            AtributoAEvaluarenWhere = Cadenas[indexWhere + 1];
+                            Operador = Cadenas[indexWhere + 2];
+                            ValorNumerico = Cadenas[indexWhere + 3];
+                        }
+
+                    }
+                    else // En caso de que no tengamos un Where
+                    {
+                        ConsultaWhere = 1;
+                        for (int i = indexFrom + 1; i < Cadenas.Count; i++)
+                        {
+                            TablasAConsultar.Add(Cadenas[i]);
+                        }
+                    }
+                }
+            }
+            string CadenaColumnasAMostrar = "";
+            string CadenaTablaAConsultar = "";
+            foreach (string c in ColumnasAMostrar)
+            {
+                CadenaColumnasAMostrar += c + "\n";
+            }
+            foreach (string c in TablasAConsultar)
+            {
+                CadenaTablaAConsultar += c + "\n";
+            }
+            //MessageBox.Show("Columnas que vamos a mostrar:" + CadenaColumnasAMostrar + "Tamaño: " + CadenaColumnasAMostrar.Length.ToString());
+            //MessageBox.Show("Tabla que vamos a consultar: " + CadenaTablaAConsultar);
+            //MessageBox.Show("Atributo que vamos a evaluar en la condición Where: " + AtributoAEvaluarenWhere);
+            //MessageBox.Show("Operador con el que vamos a evaluar al atributo: " + Operador);
+            //MessageBox.Show("Valor con el que vamos a evaluar al atributo: " + ValorNumerico);
+
+            switch (ConsultaWhere)
+            {
+                case 1:
+                    RegistrosNormales(TablasAConsultar[0],ColumnasAMostrar);
+                    break;
+
+                case 2:
+                    List<Registro> Registros = RegistrosWhere(TablasAConsultar[0], AtributoAEvaluarenWhere, ValorNumerico, Operador, ColumnasAMostrar);
+                    if(EncuentraEntidadPadre(D.Entidades,TablasAConsultar[0]) != null)
+                    {
+                        MuestraRegistrosConFormato(ColumnasAMostrar, Registros, EncuentraEntidadPadre(D.Entidades, TablasAConsultar[0]));
+                    }
+                    break;
+                case 3:
+
+                    break;
+            }
+
+        }
+
+        public void RegistrosNormales(string NombreTablaAConsultar, List<string> NombreAtributos)
+        {
+            DGV_ConsultasSQL.Columns.Clear();
+            DGV_ConsultasSQL.Rows.Clear();
+            Entidad Entidad = EncuentraEntidadPadre(D.Entidades, NombreTablaAConsultar);
+            if(Entidad != null)
+            {
+                string RutaEntidad = RutaCarpeta + "\\" + Entidad.ClaveEnString() + ".dat";
+                ManejoArchivo.LeeDatos(Entidad, RutaEntidad, archivo);
+                List<int> IndicesAtributosAMostrar = new List<int>();
+                foreach (string c in NombreAtributos)
+                {
+                    int indexAtributoMuestra = ObtenIndiceAtributoString(c, Entidad);
+                    if (indexAtributoMuestra != -1)
+                    {
+                        IndicesAtributosAMostrar.Add(indexAtributoMuestra);
+                    }
+                }
+                List<Atributo> Atributos = new List<Atributo>();
+                foreach (int i in IndicesAtributosAMostrar)
+                {
+                    DGV_ConsultasSQL.Columns.Add(Entidad.Atributos[i].ObtenCadenaNombre(), Entidad.Atributos[i].ObtenCadenaNombre());
+                    Atributos.Add(Entidad.Atributos[i]);
+                }
+                int z = 0;
+                int j = 0;
+                foreach (Registro R in Entidad.Registros)
+                {
+                    DGV_ConsultasSQL.Rows.Add();
+                    Registro Aux = new Registro();
+
+                    foreach (int l in IndicesAtributosAMostrar)
+                    {
+                        Aux.Informacion.Add(R.Informacion[l]);
+                    }
+                    foreach (byte[] b in Aux.Informacion)
+                    {
+                        if (Atributos[z].getTipoAtributo() == "E")
+                        {
+                            int Numero = BitConverter.ToInt32(b, 0);
+                            DGV_ConsultasSQL.Rows[j].Cells[Atributos[z].ObtenCadenaNombre()].Value = Numero;
+                        }
+                        else if (Atributos[z].getTipoAtributo() == "C")
+                        {
+                            string Cadena = System.Text.Encoding.UTF8.GetString(b);
+                            DGV_ConsultasSQL.Rows[j].Cells[Atributos[z].ObtenCadenaNombre()].Value = Cadena;
+                        }
+                        else if (Atributos[z].getTipoAtributo() == "D")
+                        {
+                            double Numero = BitConverter.ToDouble(b, 0);
+                            DGV_ConsultasSQL.Rows[j].Cells[Atributos[z].ObtenCadenaNombre()].Value = Numero;
+                        }
+                        z++;
+                        if (z >= Atributos.Count)
+                        {
+                            z = 0;
+                        }
+                    }
+                    j++;
+                }
+            }
+        }
+
+        public List<Registro> RegistrosWhere(string NombreTablaAConsultar, string AtributoAEvaluarWhere, string ValorNumerico, string OperadorEvaluacion, List<string> NombreAtributos)
+        {
+            DGV_ConsultasSQL.Columns.Clear();
+            DGV_ConsultasSQL.Rows.Clear();
+            List<Registro> Registros = new List<Registro>();
+            Entidad Entidad = EncuentraEntidadPadre(D.Entidades, NombreTablaAConsultar);
+            if (Entidad != null)
+            {
+                string RutaEntidad = RutaCarpeta + "\\" + Entidad.ClaveEnString() + ".dat";
+                ManejoArchivo.LeeDatos(Entidad, RutaEntidad, archivo);
+                int indexAtributo = ObtenIndiceAtributoString(AtributoAEvaluarWhere, Entidad);
+                if (indexAtributo != -1)
+                {
+                    foreach (Registro r in Entidad.Registros)
+                    {
+                        if (EvaluaCondicion(r, indexAtributo, OperadorEvaluacion, ValorNumerico))
+                        {
+                            Registros.Add(r);
+                        }
+                    }
+                }
+            }
+            return Registros;
+        }
+
+        public bool EvaluaCondicion(Registro R, int indexAtributo, string OperadorEvaluacion, string ValorNumerico)
+        {
+            if (OperadorEvaluacion == "!=")
+            {
+                OperadorEvaluacion = "<>";
+            }
+            switch (OperadorEvaluacion)
+            {
+                case "=":
+                    if (BitConverter.ToInt32(R.Informacion[indexAtributo], 0) == int.Parse(ValorNumerico))
+                    {
+                        return true;
+                    }
+                    break;
+                case "<>":
+                    if (BitConverter.ToInt32(R.Informacion[indexAtributo], 0) != int.Parse(ValorNumerico))
+                    {
+                        return true;
+                    }
+                    break;
+                case ">":
+                    if (BitConverter.ToInt32(R.Informacion[indexAtributo], 0) > int.Parse(ValorNumerico))
+                    {
+                        return true;
+                    }
+                    break;
+                case ">=":
+                    if (BitConverter.ToInt32(R.Informacion[indexAtributo], 0) >= int.Parse(ValorNumerico))
+                    {
+                        return true;
+                    }
+                    break;
+                case "<":
+                    if (BitConverter.ToInt32(R.Informacion[indexAtributo], 0) < int.Parse(ValorNumerico))
+                    {
+                        return true;
+                    }
+                    break;
+                case "<=":
+                    if (BitConverter.ToInt32(R.Informacion[indexAtributo], 0) <= int.Parse(ValorNumerico))
+                    {
+                        return true;
+                    }
+                    break;
+            }
+            return false;
+        }
+        /// <summary>
+        /// /Método que busca en una lista de Cadenas una palabra. Si encuentra la palabra regresa la posición en la lista, si no, regresa -1
+        /// </summary>
+        /// <param name="Consulta"></param>
+        /// <param name="PalabraABuscart"></param>
+        /// <returns></returns>
+        private int BuscaIndexPalabra(List<string> Consulta, string PalabraABuscar)
+        {
+            int index = -1;
+            for (int i = 0; i < Consulta.Count; i++)
+            {
+                if (Consulta[i] == PalabraABuscar)
+                {
+                    index = i;
+                    return index;
+                }
+            }
+            return index;
+        }
+
+        private void MuestraRegistrosConFormato(List<string> NombreAtributos,List<Registro> Registros, Entidad Entidad)
+        {
+            List<int> IndicesAtributosAMostrar = new List<int>();
+            string x = "*"; 
+            MessageBox.Show("Cadena: " + x + "Longitud: " + x.Length.ToString());
+            foreach (string c in NombreAtributos)
+            {
+                int indexAtributoMuestra = ObtenIndiceAtributoString(c, Entidad);
+                if (indexAtributoMuestra != -1)
+                {
+                    IndicesAtributosAMostrar.Add(indexAtributoMuestra);
+                }
+            }
+            List<Atributo> Atributos = new List<Atributo>();
+            foreach (int i in IndicesAtributosAMostrar)
+            {
+                DGV_ConsultasSQL.Columns.Add(Entidad.Atributos[i].ObtenCadenaNombre(), Entidad.Atributos[i].ObtenCadenaNombre());
+                Atributos.Add(Entidad.Atributos[i]);
+            }
+            //MessageBox.Show("Numero de Atributos: " + Atributos.Count);
+            int z = 0;
+            int j = 0;
+            foreach (Registro R in Registros)
+            {
+                DGV_ConsultasSQL.Rows.Add();
+                Registro Aux = new Registro();
+
+                foreach (int l in IndicesAtributosAMostrar)
+                {
+                    Aux.Informacion.Add(R.Informacion[l]);
+                }
+                foreach (byte[] b in Aux.Informacion)
+                {
+                    if (Atributos[z].getTipoAtributo() == "E")
+                    {
+                        int Numero = BitConverter.ToInt32(b, 0);
+                        DGV_ConsultasSQL.Rows[j].Cells[Atributos[z].ObtenCadenaNombre()].Value = Numero;
+                    }
+                    else if (Atributos[z].getTipoAtributo() == "C")
+                    {
+                        string Cadena = System.Text.Encoding.UTF8.GetString(b);
+                        DGV_ConsultasSQL.Rows[j].Cells[Atributos[z].ObtenCadenaNombre()].Value = Cadena;
+                    }
+                    else if (Atributos[z].getTipoAtributo() == "D")
+                    {
+                        double Numero = BitConverter.ToDouble(b, 0);
+                        DGV_ConsultasSQL.Rows[j].Cells[Atributos[z].ObtenCadenaNombre()].Value = Numero;
+                    }
+                    z++;
+                    if (z >= Atributos.Count)
+                    {
+                        z = 0;
+                    }
+                }
+                j++;
+            }
         }
         #endregion
-
-        private void renombrarBDToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
