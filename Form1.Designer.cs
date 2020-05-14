@@ -145,6 +145,7 @@
             this.NuevoArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.renombrarBDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BT_LimpiarConsultaSQL = new System.Windows.Forms.Button();
             this.Pestañas.SuspendLayout();
             this.Pestaña_Entidades.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Entidades)).BeginInit();
@@ -1116,6 +1117,7 @@
             // 
             // Pestaña_Consultas
             // 
+            this.Pestaña_Consultas.Controls.Add(this.BT_LimpiarConsultaSQL);
             this.Pestaña_Consultas.Controls.Add(this.DGV_ConsultasSQL);
             this.Pestaña_Consultas.Controls.Add(this.BT_EjecutarConsulta);
             this.Pestaña_Consultas.Controls.Add(this.TextB_Consulta);
@@ -1130,9 +1132,9 @@
             // DGV_ConsultasSQL
             // 
             this.DGV_ConsultasSQL.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_ConsultasSQL.Location = new System.Drawing.Point(486, 50);
+            this.DGV_ConsultasSQL.Location = new System.Drawing.Point(330, 50);
             this.DGV_ConsultasSQL.Name = "DGV_ConsultasSQL";
-            this.DGV_ConsultasSQL.Size = new System.Drawing.Size(505, 466);
+            this.DGV_ConsultasSQL.Size = new System.Drawing.Size(661, 466);
             this.DGV_ConsultasSQL.TabIndex = 3;
             // 
             // BT_EjecutarConsulta
@@ -1151,7 +1153,7 @@
             this.TextB_Consulta.Multiline = true;
             this.TextB_Consulta.Name = "TextB_Consulta";
             this.TextB_Consulta.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TextB_Consulta.Size = new System.Drawing.Size(441, 180);
+            this.TextB_Consulta.Size = new System.Drawing.Size(311, 180);
             this.TextB_Consulta.TabIndex = 1;
             // 
             // LB_Consulta
@@ -1201,29 +1203,39 @@
             // abrirArchivoToolStripMenuItem
             // 
             this.abrirArchivoToolStripMenuItem.Name = "abrirArchivoToolStripMenuItem";
-            this.abrirArchivoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.abrirArchivoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.abrirArchivoToolStripMenuItem.Text = "Abrir Archivo";
             this.abrirArchivoToolStripMenuItem.Click += new System.EventHandler(this.AbrirArchivoToolStripMenuItem_Click);
             // 
             // NuevoArchivoToolStripMenuItem
             // 
             this.NuevoArchivoToolStripMenuItem.Name = "NuevoArchivoToolStripMenuItem";
-            this.NuevoArchivoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.NuevoArchivoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.NuevoArchivoToolStripMenuItem.Text = "Nuevo Archivo";
             this.NuevoArchivoToolStripMenuItem.Click += new System.EventHandler(this.NuevoArchivoToolStripMenuItem_Click);
             // 
             // cerrarArchivoToolStripMenuItem
             // 
             this.cerrarArchivoToolStripMenuItem.Name = "cerrarArchivoToolStripMenuItem";
-            this.cerrarArchivoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cerrarArchivoToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.cerrarArchivoToolStripMenuItem.Text = "Cerrar Archivo";
             this.cerrarArchivoToolStripMenuItem.Click += new System.EventHandler(this.CerrarArchivoToolStripMenuItem_Click);
             // 
             // renombrarBDToolStripMenuItem
             // 
             this.renombrarBDToolStripMenuItem.Name = "renombrarBDToolStripMenuItem";
-            this.renombrarBDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.renombrarBDToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.renombrarBDToolStripMenuItem.Text = "Renombrar BD";
+            // 
+            // BT_LimpiarConsultaSQL
+            // 
+            this.BT_LimpiarConsultaSQL.Location = new System.Drawing.Point(13, 308);
+            this.BT_LimpiarConsultaSQL.Name = "BT_LimpiarConsultaSQL";
+            this.BT_LimpiarConsultaSQL.Size = new System.Drawing.Size(101, 34);
+            this.BT_LimpiarConsultaSQL.TabIndex = 4;
+            this.BT_LimpiarConsultaSQL.Text = "Limpiar Consulta";
+            this.BT_LimpiarConsultaSQL.UseVisualStyleBackColor = true;
+            this.BT_LimpiarConsultaSQL.Click += new System.EventHandler(this.BT_LimpiarConsultaSQL_Click);
             // 
             // Form1
             // 
@@ -1387,6 +1399,7 @@
         private System.Windows.Forms.TextBox TextB_Consulta;
         private System.Windows.Forms.DataGridView DGV_ConsultasSQL;
         private System.Windows.Forms.ToolStripMenuItem renombrarBDToolStripMenuItem;
+        private System.Windows.Forms.Button BT_LimpiarConsultaSQL;
     }
 }
 
